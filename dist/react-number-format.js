@@ -1,7 +1,7 @@
 /*!
  * react-number-format - 1.0.1
  * Author : Sudhanshu Yadav
- * Copyright (c) 2016 to Sudhanshu Yadav - ignitersworld.com , released under the MIT license.
+ * Copyright (c) 2016,2017 to Sudhanshu Yadav - ignitersworld.com , released under the MIT license.
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -131,9 +131,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getSeparators',
 	    value: function getSeparators() {
-	      var _props = this.props;
-	      var thousandSeparator = _props.thousandSeparator;
-	      var decimalSeparator = _props.decimalSeparator;
+	      var _props = this.props,
+	          thousandSeparator = _props.thousandSeparator,
+	          decimalSeparator = _props.decimalSeparator;
 
 	      if (thousandSeparator === true) {
 	        thousandSeparator = ',';
@@ -155,11 +155,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getNumberRegex',
 	    value: function getNumberRegex(g) {
-	      var _getSeparators = this.getSeparators();
+	      var _getSeparators = this.getSeparators(),
+	          decimalSeparator = _getSeparators.decimalSeparator;
 
-	      var decimalSeparator = _getSeparators.decimalSeparator;
-
-	      return new RegExp('\\d' + (decimalSeparator ? '|' + escapeRegExp(decimalSeparator) : ''), g ? 'g' : undefined);
+	      return new RegExp('\\-?[\\d' + (decimalSeparator ? '|' + escapeRegExp(decimalSeparator) : '') + ']?', g ? 'g' : undefined);
 	    }
 	  }, {
 	    key: 'setCaretPosition',
@@ -191,9 +190,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'formatWithPattern',
 	    value: function formatWithPattern(str) {
-	      var _props2 = this.props;
-	      var format = _props2.format;
-	      var mask = _props2.mask;
+	      var _props2 = this.props,
+	          format = _props2.format,
+	          mask = _props2.mask;
 
 	      if (!format) return str;
 	      var hashCount = format.split('#').length - 1;
@@ -217,24 +216,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'formatInput',
 	    value: function formatInput(val) {
-	      var _props3 = this.props;
-	      var prefix = _props3.prefix;
-	      var suffix = _props3.suffix;
-	      var mask = _props3.mask;
-	      var format = _props3.format;
+	      var _props3 = this.props,
+	          prefix = _props3.prefix,
+	          suffix = _props3.suffix,
+	          mask = _props3.mask,
+	          format = _props3.format;
 
-	      var _getSeparators2 = this.getSeparators();
-
-	      var thousandSeparator = _getSeparators2.thousandSeparator;
-	      var decimalSeparator = _getSeparators2.decimalSeparator;
+	      var _getSeparators2 = this.getSeparators(),
+	          thousandSeparator = _getSeparators2.thousandSeparator,
+	          decimalSeparator = _getSeparators2.decimalSeparator;
 
 	      var maskPattern = format && typeof format == 'string' && !!mask;
 
 	      var numRegex = this.getNumberRegex(true);
 
 	      if (!val || !(val + '').match(numRegex)) return { value: '', formattedValue: maskPattern ? '' : '' };
-	      var num = (val + '').match(numRegex).join('');
+	      var tempNum = (val + '').match(numRegex).join('');
 
+	      if (tempNum.indexOf('-') === 0 && typeof format == 'undefined') {
+	        tempNum = tempNum.replace('-', 'PLACEHOLDER').replace(/\-/g, '').replace('PLACEHOLDER', '-');
+	      } else {
+	        tempNum = tempNum.replace(/\-/g, '');
+	      }
+
+	      var num = tempNum;
 	      var formattedValue = num;
 
 	      if (format) {
@@ -294,10 +299,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      e.persist();
 	      var inputValue = e.target.value + '';
 
-	      var _formatInput = this.formatInput(inputValue);
-
-	      var formattedValue = _formatInput.formattedValue;
-	      var value = _formatInput.value;
+	      var _formatInput = this.formatInput(inputValue),
+	          formattedValue = _formatInput.formattedValue,
+	          value = _formatInput.value;
 
 	      var cursorPos = this.refs.input.selectionStart;
 
@@ -307,7 +311,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _this2.setCaretPosition(cursorPos);
 	        if (callback) callback(e, value);
 	      });
-
 	      return value;
 	    }
 	  }, {

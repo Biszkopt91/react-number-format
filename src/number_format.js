@@ -66,7 +66,7 @@ class NumberFormat extends React.Component {
   getNumberRegex(g) {
     const {decimalSeparator} = this.getSeparators();
 
-    return new RegExp('\\-?\\d' + (decimalSeparator ? '|' + escapeRegExp(decimalSeparator) : ''), g ? 'g' : undefined);
+    return new RegExp('\\-?[\\d' + (decimalSeparator ? '|' + escapeRegExp(decimalSeparator) : '') + ']?', g ? 'g' : undefined);
   }
 
   setCaretPosition(caretPos) {
@@ -128,7 +128,7 @@ class NumberFormat extends React.Component {
     if(!val || !((val+'').match(numRegex))) return {value :'', formattedValue: (maskPattern ? '' : '')}
     let tempNum = (val+'').match(numRegex).join('')
 
-     if(tempNum.indexOf('-') === 0){
+     if(tempNum.indexOf('-') === 0 && typeof format == 'undefined'){
        tempNum = tempNum.replace('-', 'PLACEHOLDER')
          .replace(/\-/g, '')
          .replace('PLACEHOLDER', '-');
@@ -203,7 +203,6 @@ class NumberFormat extends React.Component {
       this.setCaretPosition(cursorPos);
       if(callback) callback(e,value);
     });
-
     return value;
   }
 
