@@ -38,18 +38,18 @@ class NumberFormat extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    let {formattedValue,value} = this.formatInput(this.state.value, nextProps);
-    if(nextProps.value === value){
+    let {formattedValue,value} = this.formatInput(this.state.value, newProps);
+    if(newProps.value === value){
       let cursorPos = this.refs.input.selectionStart;
       this.setState({value : formattedValue},()=>{
         cursorPos = this.getCursorPosition(value, formattedValue, cursorPos );
         this.setCaretPosition(cursorPos);
       })
     } else {
-        this.setState({
-          value : formattedValue
-        });
-      }
+      this.setState({
+        value : formattedValue
+      });
+    }
   }
 
   getSeparators() {

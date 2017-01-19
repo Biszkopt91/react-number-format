@@ -126,11 +126,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function componentWillReceiveProps(newProps) {
 	      var _this2 = this;
 
-	      var _formatInput = this.formatInput(this.state.value, nextProps),
+	      var _formatInput = this.formatInput(this.state.value, newProps),
 	          formattedValue = _formatInput.formattedValue,
 	          value = _formatInput.value;
 
-	      if (nextProps.value === value) {
+	      if (newProps.value === value) {
 	        (function () {
 	          var cursorPos = _this2.refs.input.selectionStart;
 	          _this2.setState({ value: formattedValue }, function () {
