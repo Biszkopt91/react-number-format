@@ -343,7 +343,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        type: 'tel',
 	        value: this.state.value,
 	        ref: 'input',
-	        onInput: this.onChange,
 	        onChange: this.onChange
 	      }));
 	    }
