@@ -216,11 +216,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'formatInput',
 	    value: function formatInput(val) {
-	      var _props3 = this.props,
-	          prefix = _props3.prefix,
-	          suffix = _props3.suffix,
-	          mask = _props3.mask,
-	          format = _props3.format;
+	      var customProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+	      var _ref = customProps ? customProps : this.props,
+	          prefix = _ref.prefix,
+	          suffix = _ref.suffix,
+	          mask = _ref.mask,
+	          format = _ref.format;
 
 	      var _getSeparators2 = this.getSeparators(),
 	          thousandSeparator = _getSeparators2.thousandSeparator,
@@ -292,23 +294,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return j;
 	    }
 	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var _this2 = this;
+
+	      debugger;
+
+	      var _formatInput = this.formatInput(this.state.value, nextProps),
+	          formattedValue = _formatInput.formattedValue,
+	          value = _formatInput.value;
+
+	      if (nextProps.value === value) {
+	        this.setState({ value: formattedValue }, function () {
+	          cursorPos = _this2.getCursorPosition(value, formattedValue, cursorPos);
+	          _this2.setCaretPosition(cursorPos);
+	        });
+	      };
+	    }
+	  }, {
 	    key: 'onChangeHandler',
 	    value: function onChangeHandler(e, callback) {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      e.persist();
 	      var inputValue = e.target.value + '';
 
-	      var _formatInput = this.formatInput(inputValue),
-	          formattedValue = _formatInput.formattedValue,
-	          value = _formatInput.value;
+	      var _formatInput2 = this.formatInput(inputValue),
+	          formattedValue = _formatInput2.formattedValue,
+	          value = _formatInput2.value;
 
 	      var cursorPos = this.refs.input.selectionStart;
 
 	      //change the state
 	      this.setState({ value: formattedValue }, function () {
-	        cursorPos = _this2.getCursorPosition(inputValue, formattedValue, cursorPos);
-	        _this2.setCaretPosition(cursorPos);
+	        cursorPos = _this3.getCursorPosition(inputValue, formattedValue, cursorPos);
+	        _this3.setCaretPosition(cursorPos);
 	        if (callback) callback(e, value);
 	      });
 	      return value;
