@@ -124,9 +124,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(NumberFormat, [{
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(newProps) {
-	      this.setState({
-	        value: this.formatInput(newProps.value).formattedValue
-	      });
+	      var _this2 = this;
+
+	      var _formatInput = this.formatInput(this.state.value, nextProps),
+	          formattedValue = _formatInput.formattedValue,
+	          value = _formatInput.value;
+
+	      if (nextProps.value === value) {
+	        (function () {
+	          var cursorPos = _this2.refs.input.selectionStart;
+	          _this2.setState({ value: formattedValue }, function () {
+	            cursorPos = _this2.getCursorPosition(value, formattedValue, cursorPos);
+	            _this2.setCaretPosition(cursorPos);
+	          });
+	        })();
+	      } else {
+	        this.setState({
+	          value: formattedValue
+	        });
+	      }
 	    }
 	  }, {
 	    key: 'getSeparators',
@@ -292,24 +308,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (!formattedValue[j - 1].match(numRegex)) j--;else break;
 	      }
 	      return j;
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      var _this2 = this;
-
-	      debugger;
-
-	      var _formatInput = this.formatInput(this.state.value, nextProps),
-	          formattedValue = _formatInput.formattedValue,
-	          value = _formatInput.value;
-
-	      if (nextProps.value === value) {
-	        this.setState({ value: formattedValue }, function () {
-	          cursorPos = _this2.getCursorPosition(value, formattedValue, cursorPos);
-	          _this2.setCaretPosition(cursorPos);
-	        });
-	      };
 	    }
 	  }, {
 	    key: 'onChangeHandler',

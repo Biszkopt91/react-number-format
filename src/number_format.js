@@ -38,9 +38,18 @@ class NumberFormat extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({
-      value : this.formatInput(newProps.value).formattedValue
-    });
+    let {formattedValue,value} = this.formatInput(this.state.value, nextProps);
+    if(nextProps.value === value){
+      let cursorPos = this.refs.input.selectionStart;
+      this.setState({value : formattedValue},()=>{
+        cursorPos = this.getCursorPosition(value, formattedValue, cursorPos );
+        this.setCaretPosition(cursorPos);
+      })
+    } else {
+        this.setState({
+          value : formattedValue
+        });
+      }
   }
 
   getSeparators() {
@@ -120,7 +129,7 @@ class NumberFormat extends React.Component {
 
   formatInput(val, customProps = null) {
     const {prefix, suffix, mask, format} = customProps ? customProps : this.props;
-  
+
     const {thousandSeparator, decimalSeparator} = this.getSeparators();
     const maskPattern = format && typeof format == 'string' && !!mask;
 
@@ -188,17 +197,6 @@ class NumberFormat extends React.Component {
       else break;
     }
     return j;
-  }
-
-  componentWillReceiveProps(nextProps){
-    debugger;
-    let {formattedValue,value} = this.formatInput(this.state.value, nextProps);
-    if(nextProps.value === value){
-      this.setState({value : formattedValue},()=>{
-        cursorPos = this.getCursorPosition(value, formattedValue, cursorPos );
-      this.setCaretPosition(cursorPos);
-    });
-    };
   }
 
   onChangeHandler(e,callback) {
