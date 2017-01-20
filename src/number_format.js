@@ -41,10 +41,7 @@ class NumberFormat extends React.Component {
     let {formattedValue,value} = this.formatInput(this.state.value, newProps);
     if(newProps.value === value){
       let cursorPos = this.refs.input.selectionStart;
-      this.setState({value : formattedValue},()=>{
-        cursorPos = this.getCursorPosition(value, formattedValue, cursorPos );
-        this.setCaretPosition(cursorPos);
-      })
+      this.setState({value : formattedValue})
     } else {
       this.setState({
         value : formattedValue
@@ -52,8 +49,8 @@ class NumberFormat extends React.Component {
     }
   }
 
-  getSeparators() {
-    let {thousandSeparator, decimalSeparator} = this.props;
+  getSeparators(customProps = null) {
+    let {thousandSeparator, decimalSeparator} =  customProps ? customProps : this.props;
     if (thousandSeparator === true) {
       thousandSeparator = ','
     }
@@ -129,8 +126,7 @@ class NumberFormat extends React.Component {
 
   formatInput(val, customProps = null) {
     const {prefix, suffix, mask, format} = customProps ? customProps : this.props;
-
-    const {thousandSeparator, decimalSeparator} = this.getSeparators();
+    const {thousandSeparator, decimalSeparator} = this.getSeparators(customProps);
     const maskPattern = format && typeof format == 'string' && !!mask;
 
     const numRegex = this.getNumberRegex(true);

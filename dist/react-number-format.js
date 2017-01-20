@@ -124,20 +124,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(NumberFormat, [{
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(newProps) {
-	      var _this2 = this;
-
 	      var _formatInput = this.formatInput(this.state.value, newProps),
 	          formattedValue = _formatInput.formattedValue,
 	          value = _formatInput.value;
 
 	      if (newProps.value === value) {
-	        (function () {
-	          var cursorPos = _this2.refs.input.selectionStart;
-	          _this2.setState({ value: formattedValue }, function () {
-	            cursorPos = _this2.getCursorPosition(value, formattedValue, cursorPos);
-	            _this2.setCaretPosition(cursorPos);
-	          });
-	        })();
+	        var cursorPos = this.refs.input.selectionStart;
+	        this.setState({ value: formattedValue });
 	      } else {
 	        this.setState({
 	          value: formattedValue
@@ -147,9 +140,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getSeparators',
 	    value: function getSeparators() {
-	      var _props = this.props,
-	          thousandSeparator = _props.thousandSeparator,
-	          decimalSeparator = _props.decimalSeparator;
+	      var customProps = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+	      var _ref = customProps ? customProps : this.props,
+	          thousandSeparator = _ref.thousandSeparator,
+	          decimalSeparator = _ref.decimalSeparator;
 
 	      if (thousandSeparator === true) {
 	        thousandSeparator = ',';
@@ -206,9 +201,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'formatWithPattern',
 	    value: function formatWithPattern(str) {
-	      var _props2 = this.props,
-	          format = _props2.format,
-	          mask = _props2.mask;
+	      var _props = this.props,
+	          format = _props.format,
+	          mask = _props.mask;
 
 	      if (!format) return str;
 	      var hashCount = format.split('#').length - 1;
@@ -234,13 +229,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function formatInput(val) {
 	      var customProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-	      var _ref = customProps ? customProps : this.props,
-	          prefix = _ref.prefix,
-	          suffix = _ref.suffix,
-	          mask = _ref.mask,
-	          format = _ref.format;
+	      var _ref2 = customProps ? customProps : this.props,
+	          prefix = _ref2.prefix,
+	          suffix = _ref2.suffix,
+	          mask = _ref2.mask,
+	          format = _ref2.format;
 
-	      var _getSeparators2 = this.getSeparators(),
+	      var _getSeparators2 = this.getSeparators(customProps),
 	          thousandSeparator = _getSeparators2.thousandSeparator,
 	          decimalSeparator = _getSeparators2.decimalSeparator;
 
@@ -312,7 +307,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'onChangeHandler',
 	    value: function onChangeHandler(e, callback) {
-	      var _this3 = this;
+	      var _this2 = this;
 
 	      e.persist();
 	      var inputValue = e.target.value + '';
@@ -325,8 +320,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      //change the state
 	      this.setState({ value: formattedValue }, function () {
-	        cursorPos = _this3.getCursorPosition(inputValue, formattedValue, cursorPos);
-	        _this3.setCaretPosition(cursorPos);
+	        cursorPos = _this2.getCursorPosition(inputValue, formattedValue, cursorPos);
+	        _this2.setCaretPosition(cursorPos);
 	        if (callback) callback(e, value);
 	      });
 	      return value;
