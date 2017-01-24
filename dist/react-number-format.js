@@ -124,18 +124,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(NumberFormat, [{
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(newProps) {
-	      var _formatInput = this.formatInput(this.state.value, newProps),
+	      var _formatInput = this.formatInput(newProps.value, newProps),
 	          formattedValue = _formatInput.formattedValue,
 	          value = _formatInput.value;
 
-	      if (newProps.value === value) {
-	        var cursorPos = this.refs.input.selectionStart;
-	        this.setState({ value: formattedValue });
-	      } else {
-	        this.setState({
-	          value: formattedValue
-	        });
-	      }
+	      this.setState({
+	        value: formattedValue
+	      });
 	    }
 	  }, {
 	    key: 'getSeparators',
