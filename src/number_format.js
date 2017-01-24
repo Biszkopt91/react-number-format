@@ -38,15 +38,10 @@ class NumberFormat extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    let {formattedValue,value} = this.formatInput(this.state.value, newProps);
-    if(newProps.value === value){
-      let cursorPos = this.refs.input.selectionStart;
-      this.setState({value : formattedValue})
-    } else {
-      this.setState({
-        value : formattedValue
-      });
-    }
+    const { formattedValue, value } = this.formatInput(newProps.value, newProps);
+    this.setState({
+      value : formattedValue
+    });
   }
 
   getSeparators(customProps = null) {
